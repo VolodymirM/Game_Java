@@ -5,7 +5,7 @@ public class Game implements Runnable{
     private GamePanel gamePanel;
     private GameWindow gameWindow;
     private Thread gameThread;
-    private final int FPS_SET = 60;
+    private final int FPS_SET = 165;
 
     public Game() {
         gamePanel = new GamePanel();
@@ -16,6 +16,7 @@ public class Game implements Runnable{
 
     private void startGameLoop() {
         gameThread = new Thread(this);
+        gameThread.start();
     }
 
     @Override
@@ -31,7 +32,7 @@ public class Game implements Runnable{
                 gamePanel.repaint();;
                 lastFrame = now;
             }
-
+            
         }
 
     }
