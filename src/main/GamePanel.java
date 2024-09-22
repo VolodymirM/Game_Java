@@ -37,22 +37,10 @@ public class GamePanel extends JPanel {
 
     private void loadAnimations() {
         animations = new BufferedImage[3][8];
-        //int xBackwards = 4;
-
+        
         for (int j = 0; j < animations.length; ++j) {
-            for (int i = 0; i < animations[j].length; ++i) {
-                /*if (i < 6) {
-                    animations[j][i] = img.getSubimage(i * 50, 0, 50, 50);
-                    continue;
-                }
-                if (i < 11) {
-                    animations[j][i] = img.getSubimage(xBackwards * 50, 0, 50, 50);
-                    --xBackwards;
-                    continue;
-                }
-                animations[i] = img.getSubimage((i - 11) * 50, 50, 50, 50);*/
+            for (int i = 0; i < animations[j].length; ++i)
                 animations[j][i] = img.getSubimage(i * 50, j * 50, 50, 50);
-            }
         }
     }
 
@@ -128,14 +116,30 @@ public class GamePanel extends JPanel {
         }
     }
     
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    public void updateGame() {
         updateAnimationTick();
-
         setAnimation();
         updatePosition();
+    }
 
-        g.drawImage(animations[playerAction][aniIndex], (int) xDelta, (int) yDelta, 160, 160, null);
+    public void paintComponent(Graphics g) {
+        int[] xBackwards = {4, 3, 2, 1, 0};
+        
+        super.paintComponent(g);
+
+        if (playerAction == IDLE) {
+            if (aniIndex < 6)
+                g.drawImage(animations[playerAction][aniIndex], (int) xDelta, (int) yDelta, 160, 160, null);
+            else if (aniIndex < 11)
+                g.drawImage(animations[playerAction][xBackwards[aniIndex - 6]], (int) xDelta, (int) yDelta, 160, 160, null);
+            else
+                g.drawImage(animations[playerAction + 1][aniIndex - 11], (int) xDelta, (int) yDelta, 160, 160, null);
+            
+        }
+        
+        if (playerAction == RUNNING)
+            if (aniIndex + 2 < animations[playerAction + 1].length)
+                g.drawImage(animations[playerAction + 1][aniIndex + 2], (int) xDelta, (int) yDelta, 160, 160, null);
     }
 
 }

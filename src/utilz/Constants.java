@@ -20,9 +20,9 @@ public class Constants {
 
             switch (player_action) {
                 case RUNNING:
-                    return 8;
+                    return 5;
                 case IDLE:
-                    return 6;
+                    return 14;
                 case JUMPING:
                 case GROUND:
                     return 3;
