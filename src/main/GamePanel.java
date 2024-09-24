@@ -2,16 +2,10 @@ package main;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
-import java.io.InputStream;
-import java.io.IOException;
 import javax.swing.JPanel;
 import inputs.KeyboardInputs;
 import inputs.MouseInputs;
 
-import static utilz.Constants.PlayerConstants.*;
-import static utilz.Constants.Directions.*;
 
 public class GamePanel extends JPanel {
 

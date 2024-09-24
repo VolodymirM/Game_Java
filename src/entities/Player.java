@@ -7,15 +7,15 @@ import java.io.IOException;
 import java.awt.Graphics;
 
 import static utilz.Constants.PlayerConstants.*;
-import static utilz.Constants.Directions.*;
 
 public class Player extends Entity{
 
     private BufferedImage[][] animations;
     private int aniTick, aniIndex, aniSpeed = 20;
     private int playerAction = IDLE;
-    private int playerDir = -1;
     private boolean moving = false;
+    private boolean left = false, right = false, up = false, down = false;
+    private float playerSpeed = 2.0f;
 
     public Player(float x, float y) {
         super(x, y);
@@ -23,11 +23,22 @@ public class Player extends Entity{
     }
 
     public void update() {
+        updatePosition();
         updateAnimationTick();
         setAnimation();
-        updatePosition();
     }
-
+    
+    private void updateAnimationTick() {
+        ++aniTick;
+        if (aniTick >= aniSpeed) {
+            aniTick = 0;
+            ++aniIndex;
+            
+            if (aniIndex >= GetSpriteAmount(playerAction))
+                aniIndex = 0;
+        }
+    }
+    
     public void render(Graphics g) {
         int[] xBackwards = {4, 3, 2, 1, 0};
 
@@ -45,7 +56,7 @@ public class Player extends Entity{
             if (aniIndex + 2 < animations[playerAction + 1].length)
                 g.drawImage(animations[playerAction + 1][aniIndex + 2], (int) x, (int) y, 160, 160, null);
     }
-
+    
     private void loadAnimations() {
         InputStream is = getClass().getResourceAsStream("/res/player_sprites_frog.png");
         
@@ -69,26 +80,6 @@ public class Player extends Entity{
         }
         
     }
-
-    public void setDirection(int direction) {
-        this.playerDir = direction;
-        moving = true;
-    }
-    
-    public void setMoving(boolean moving) {
-        this.moving = moving;
-    }
-
-    private void updateAnimationTick() {
-        ++aniTick;
-        if (aniTick >= aniSpeed) {
-            aniTick = 0;
-            ++aniIndex;
-            
-            if (aniIndex >= GetSpriteAmount(playerAction))
-                aniIndex = 0;
-        }
-    }
     
     private void setAnimation() {
         
@@ -99,24 +90,63 @@ public class Player extends Entity{
     }
     
     private void updatePosition() {
-        
-        if (moving) {
-            switch (playerDir) {
-                case LEFT:
-                    x -= 5;
-                    break;
-                case UP:
-                    y -= 5;
-                    break;
-                case RIGHT:
-                    x += 5;
-                    break;
-                case DOWN:
-                    y += 5;
-                    break;
 
-            }
+        moving = false;
+
+        if (left && !right) {
+            x -= playerSpeed;
+            moving = true;
+        } else if (right && !left) {
+            x += playerSpeed;
+            moving = true;
         }
+
+        if (up && !down) {
+            y -= playerSpeed;
+            moving = true;
+        } else if (down && !up) {
+            y += playerSpeed;
+            moving = true;
+        }
+    }
+
+    public void resetDirBooleans () {
+        left = false;
+        right = false;
+        up = false;
+        down = false;
+    }
+
+    public boolean isLeft() {
+        return left;
+    }
+
+    public void setLeft(boolean left) {
+        this.left = left;
+    }
+
+    public boolean isRight() {
+        return right;
+    }
+
+    public void setRight(boolean right) {
+        this.right = right;
+    }
+
+    public boolean isUp() {
+        return up;
+    }
+
+    public void setUp(boolean up) {
+        this.up = up;
+    }
+
+    public boolean isDown() {
+        return down;
+    }
+
+    public void setDown(boolean down) {
+        this.down = down;
     }
 
 }
