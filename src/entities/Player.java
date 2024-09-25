@@ -3,6 +3,9 @@ package entities;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import javax.imageio.ImageIO;
+
+import utilz.LoadSave;
+
 import java.io.IOException;
 import java.awt.Graphics;
 
@@ -16,9 +19,12 @@ public class Player extends Entity{
     private boolean moving = false;
     private boolean left = false, right = false, up = false, down = false;
     private float playerSpeed = 2.0f;
+    int width, height;
 
-    public Player(float x, float y) {
+    public Player(float x, float y, int width, int height) {
         super(x, y);
+        this.width = width;
+        this.height = height;
         loadAnimations();
     }
 
@@ -44,40 +50,26 @@ public class Player extends Entity{
 
         if (playerAction == IDLE) {
             if (aniIndex < 6)
-                g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, 160, 160, null);
+                g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, width, height, null);
             else if (aniIndex < 11)
-                g.drawImage(animations[playerAction][xBackwards[aniIndex - 6]], (int) x, (int) y, 160, 160, null);
+                g.drawImage(animations[playerAction][xBackwards[aniIndex - 6]], (int) x, (int) y, width, height, null);
             else
-                g.drawImage(animations[playerAction + 1][aniIndex - 11], (int) x, (int) y, 160, 160, null);
+                g.drawImage(animations[playerAction + 1][aniIndex - 11], (int) x, (int) y, width, height, null);
             
         }
         
         if (playerAction == RUNNING)
             if (aniIndex + 2 < animations[playerAction + 1].length)
-                g.drawImage(animations[playerAction + 1][aniIndex + 2], (int) x, (int) y, 160, 160, null);
+                g.drawImage(animations[playerAction + 1][aniIndex + 2], (int) x, (int) y, width, height, null);
     }
     
     private void loadAnimations() {
-        InputStream is = getClass().getResourceAsStream("/res/player_sprites_frog.png");
-        
-        try {
-            BufferedImage img = ImageIO.read(is);
+        BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
 
-            animations = new BufferedImage[3][8];
-            for (int j = 0; j < animations.length; ++j) {
-                for (int i = 0; i < animations[j].length; ++i)
-                    animations[j][i] = img.getSubimage(i * 50, j * 50, 50, 50);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        animations = new BufferedImage[3][8];
+        for (int j = 0; j < animations.length; ++j)
+            for (int i = 0; i < animations[j].length; ++i)
+                animations[j][i] = img.getSubimage(i * 50, j * 50, 50, 50);
         
     }
     
