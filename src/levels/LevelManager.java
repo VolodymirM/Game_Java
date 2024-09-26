@@ -1,7 +1,5 @@
 package levels;
 
-import static main.Game.SCALE;
-
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import main.Game;
@@ -41,5 +39,9 @@ public class LevelManager {
 
     public void update() {
 
+    }
+
+    public Level getCurrentLevel() {
+        return levelOne;
     }
 }

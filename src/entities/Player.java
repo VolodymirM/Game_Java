@@ -1,15 +1,14 @@
 package entities;
 
 import java.awt.image.BufferedImage;
-import java.io.InputStream;
-import javax.imageio.ImageIO;
 
-import utilz.LoadSave;
+import main.Game;
 
-import java.io.IOException;
 import java.awt.Graphics;
 
+import utilz.LoadSave;
 import static utilz.Constants.PlayerConstants.*;
+import static utilz.HelpMethods.CanMoveHere;
 
 public class Player extends Entity{
 
@@ -19,13 +18,13 @@ public class Player extends Entity{
     private boolean moving = false;
     private boolean left = false, right = false, up = false, down = false;
     private float playerSpeed = 2.0f;
-    int width, height;
+    private int[][] levelData;
+    private float xDrawOffset = 11 * Game.SCALE, yDrawOffset = 22 * Game.SCALE;
 
     public Player(float x, float y, int width, int height) {
-        super(x, y);
-        this.width = width;
-        this.height = height;
+        super(x, y, width, height);
         loadAnimations();
+        initHitbox(x, y, 29 * Game.SCALE, 22 * Game.SCALE);
     }
 
     public void update() {
@@ -50,17 +49,19 @@ public class Player extends Entity{
 
         if (playerAction == IDLE) {
             if (aniIndex < 6)
-                g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, width, height, null);
+                g.drawImage(animations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffset), (int) (hitbox.y - yDrawOffset), width, height, null);
             else if (aniIndex < 11)
-                g.drawImage(animations[playerAction][xBackwards[aniIndex - 6]], (int) x, (int) y, width, height, null);
+                g.drawImage(animations[playerAction][xBackwards[aniIndex - 6]], (int) (hitbox.x - xDrawOffset), (int) (hitbox.y - yDrawOffset), width, height, null);
             else
-                g.drawImage(animations[playerAction + 1][aniIndex - 11], (int) x, (int) y, width, height, null);
+                g.drawImage(animations[playerAction + 1][aniIndex - 11], (int) (hitbox.x - xDrawOffset), (int) (hitbox.y - yDrawOffset), width, height, null);
             
         }
         
         if (playerAction == RUNNING)
             if (aniIndex + 2 < animations[playerAction + 1].length)
-                g.drawImage(animations[playerAction + 1][aniIndex + 2], (int) x, (int) y, width, height, null);
+                g.drawImage(animations[playerAction + 1][aniIndex + 2], (int) (hitbox.x - xDrawOffset), (int) (hitbox.y - yDrawOffset), width, height, null);
+        
+        drawHitbox(g);
     }
     
     private void loadAnimations() {
@@ -71,6 +72,10 @@ public class Player extends Entity{
             for (int i = 0; i < animations[j].length; ++i)
                 animations[j][i] = img.getSubimage(i * 50, j * 50, 50, 50);
         
+    }
+
+    public void loadLevelData(int[][] levelData) {
+        this.levelData = levelData;
     }
     
     private void setAnimation() {
@@ -85,21 +90,33 @@ public class Player extends Entity{
 
         moving = false;
 
-        if (left && !right) {
-            x -= playerSpeed;
-            moving = true;
-        } else if (right && !left) {
-            x += playerSpeed;
-            moving = true;
-        }
+        if (!left && !right && !up && !down)
+            return;
 
-        if (up && !down) {
-            y -= playerSpeed;
-            moving = true;
-        } else if (down && !up) {
-            y += playerSpeed;
+        float xSpeed = 0, ySpeed = 0;
+
+        if (left && !right)
+            xSpeed = -playerSpeed;
+        else if (right && !left)
+            xSpeed = playerSpeed;
+
+        if (up && !down)
+            ySpeed = -playerSpeed;
+        else if (down && !up)
+            ySpeed = playerSpeed;
+
+        // if (CanMoveHere(x + xSpeed, y + ySpeed, width, height, levelData)) {
+        //     this.x += xSpeed;
+        //     this.y += ySpeed;
+        //     moving = true;
+        // }
+
+        if (CanMoveHere(hitbox.x + xSpeed, hitbox.y + ySpeed, hitbox.width, hitbox.height, levelData)) {
+            hitbox.x += xSpeed;
+            hitbox.y += ySpeed;
             moving = true;
         }
+       
     }
 
     public void resetDirBooleans () {
