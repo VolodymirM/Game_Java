@@ -1,8 +1,6 @@
 package utilz;
 
 import java.awt.geom.Rectangle2D;
-import java.lang.reflect.RecordComponent;
-
 import main.Game;
 
 public class HelpMethods {
