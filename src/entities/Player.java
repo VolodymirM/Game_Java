@@ -17,7 +17,7 @@ public class Player extends Entity{
     private int playerAction = IDLE;
     private boolean moving = false;
     private boolean left, right, up, down, jump;
-    private float playerSpeed = 1.5f;
+    private float playerSpeed = 1.5f * Game.SCALE;
     private int[][] levelData;
     private float xDrawOffset = 11 * Game.SCALE, yDrawOffset = 22 * Game.SCALE;
     
@@ -31,7 +31,7 @@ public class Player extends Entity{
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
         loadAnimations();
-        initHitbox(x, y, 29 * Game.SCALE, 22 * Game.SCALE);
+        initHitbox(x, y, (int) (29 * Game.SCALE), (int) (22 * Game.SCALE));
 
     }
 

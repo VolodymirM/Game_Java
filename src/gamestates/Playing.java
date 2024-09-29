@@ -37,26 +37,22 @@ public class Playing extends State implements StateMethods {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'mouseClicked'");
+
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'mouseMoved'");
+
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'mousePressed'");
+
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'mouseReleased'");
+
     }
 
     @Override
@@ -70,6 +66,7 @@ public class Playing extends State implements StateMethods {
                 break;
             case KeyEvent.VK_W:
                 player.setUp(true);
+                player.setJump(true);
                 break;
             case KeyEvent.VK_S:
                 player.setDown(true);
@@ -91,6 +88,7 @@ public class Playing extends State implements StateMethods {
                 break;
             case KeyEvent.VK_W:
                 player.setUp(false);
+                player.setJump(false);
                 break;
             case KeyEvent.VK_S:
                 player.setDown(false);
