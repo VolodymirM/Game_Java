@@ -52,22 +52,22 @@ public class Player extends Entity{
         }
     }
     
-    public void render(Graphics g) {
+    public void render(Graphics g, int xLevelOffset) {
         int[] xBackwards = {4, 3, 2, 1, 0};
 
         if (playerAction == IDLE) {
             if (aniIndex < 6)
-                g.drawImage(animations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffset), (int) (hitbox.y - yDrawOffset), width, height, null);
+                g.drawImage(animations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffset) - xLevelOffset, (int) (hitbox.y - yDrawOffset), width, height, null);
             else if (aniIndex < 11)
-                g.drawImage(animations[playerAction][xBackwards[aniIndex - 6]], (int) (hitbox.x - xDrawOffset), (int) (hitbox.y - yDrawOffset), width, height, null);
+                g.drawImage(animations[playerAction][xBackwards[aniIndex - 6]], (int) (hitbox.x - xDrawOffset) - xLevelOffset, (int) (hitbox.y - yDrawOffset), width, height, null);
             else
-                g.drawImage(animations[playerAction + 1][aniIndex - 11], (int) (hitbox.x - xDrawOffset), (int) (hitbox.y - yDrawOffset), width, height, null);
+                g.drawImage(animations[playerAction + 1][aniIndex - 11], (int) (hitbox.x - xDrawOffset) - xLevelOffset, (int) (hitbox.y - yDrawOffset), width, height, null);
             
         }
         
         if (playerAction == RUNNING)
             if (aniIndex + 2 < animations[playerAction + 1].length)
-                g.drawImage(animations[playerAction + 1][aniIndex + 2], (int) (hitbox.x - xDrawOffset), (int) (hitbox.y - yDrawOffset), width, height, null);
+                g.drawImage(animations[playerAction + 1][aniIndex + 2], (int) (hitbox.x - xDrawOffset) - xLevelOffset, (int) (hitbox.y - yDrawOffset), width, height, null);
         
         if (inAir) {
             if (airSpeed < 0)
@@ -77,11 +77,11 @@ public class Player extends Entity{
         }
 
         if (playerAction == JUMP) {
-            g.drawImage(animations[playerAction][aniIndex + 2], (int) (hitbox.x - xDrawOffset), (int) (hitbox.y - yDrawOffset), width, height, null);
+            g.drawImage(animations[playerAction][aniIndex + 2], (int) (hitbox.x - xDrawOffset) - xLevelOffset, (int) (hitbox.y - yDrawOffset), width, height, null);
         }
 
         if (playerAction == FALLING) {
-            g.drawImage(animations[playerAction - 1][5], (int) (hitbox.x - xDrawOffset), (int) (hitbox.y - yDrawOffset), width, height, null);
+            g.drawImage(animations[playerAction - 1][5], (int) (hitbox.x - xDrawOffset) - xLevelOffset, (int) (hitbox.y - yDrawOffset), width, height, null);
         }
 
         // if (playerAction == GROUND) {
@@ -138,8 +138,12 @@ public class Player extends Entity{
         if (jump)
             jump();
 
-        if (!left && !right && !inAir)
-            return;
+        // if (!left && !right && !inAir)
+        //     return;
+
+        if (!inAir)
+            if ((!left && !right) || (right && left))
+                return;
 
         float xSpeed = 0;
 

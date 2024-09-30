@@ -17,6 +17,7 @@ public class LoadSave {
     public static final String MENU_BUTTONS = "button_atlas.png";
     public static final String PAUSE_BACKGROUND = "pause_menu.png";
     public static final String URM_BUTTONS = "urm_buttons.png";
+    public static final String BACKGROUND = "background.png";
 
     public static BufferedImage GetSpriteAtlas(String filename) {
         BufferedImage img = null;
@@ -39,9 +40,9 @@ public class LoadSave {
     }
 
     public static int[][] GetLevelData() {
-        int[][] levelData = new int[Game.TILES_IN_HEIGHT][Game.TILES_IN_WIDTH];
         BufferedImage img = GetSpriteAtlas(LEVEL_ONE_DATA);
-
+        int[][] levelData = new int[img.getHeight()][img.getWidth()];
+        
         for (int j = 0; j < img.getHeight(); ++j) {
             for (int i = 0; i < img.getWidth(); ++i) {
                 Color color = new Color(img.getRGB(i, j));

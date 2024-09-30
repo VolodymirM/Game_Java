@@ -3,8 +3,11 @@ package gamestates;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+
 import main.Game;
 import ui.MenuButton;
+import utilz.LoadSave;
 
 public class Menu extends State implements StateMethods{
 
@@ -29,6 +32,9 @@ public class Menu extends State implements StateMethods{
 
     @Override
     public void draw(Graphics g) {
+
+        g.drawImage(backgroundImg, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
+
         for (MenuButton mb : buttons) 
             mb.draw(g);
     }
