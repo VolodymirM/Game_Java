@@ -31,7 +31,7 @@ public class Playing extends State implements StateMethods {
 
     private void initClasses() {
         levelManager = new LevelManager(game);
-        player = new Player(200, 200, (int) (50 * Game.SCALE), (int) (50 * Game.SCALE));
+        player = new Player(100, 275, (int) (50 * Game.SCALE), (int) (50 * Game.SCALE));
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
         pauseOverlay = new PauseOverlay(this);
     }
@@ -61,6 +61,11 @@ public class Playing extends State implements StateMethods {
             xLevelOffset = maxLevelOffsetX;
         else if (xLevelOffset < 0)
             xLevelOffset = 0;
+    }
+
+    public void resetAll() {
+        paused = false;
+        player.resetAll();
     }
 
     @Override

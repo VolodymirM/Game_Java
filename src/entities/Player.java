@@ -28,6 +28,9 @@ public class Player extends Entity{
     private float fallSpeedAfterColision = 0.5f * Game.SCALE;
     private boolean inAir = false;
 
+    private int flipX = 0;
+    private int flipW = 1;
+
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
         loadAnimations();
@@ -57,17 +60,17 @@ public class Player extends Entity{
 
         if (playerAction == IDLE) {
             if (aniIndex < 6)
-                g.drawImage(animations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffset) - xLevelOffset, (int) (hitbox.y - yDrawOffset), width, height, null);
+                g.drawImage(animations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffset) - xLevelOffset + flipX, (int) (hitbox.y - yDrawOffset), width * flipW, height, null);
             else if (aniIndex < 11)
-                g.drawImage(animations[playerAction][xBackwards[aniIndex - 6]], (int) (hitbox.x - xDrawOffset) - xLevelOffset, (int) (hitbox.y - yDrawOffset), width, height, null);
+                g.drawImage(animations[playerAction][xBackwards[aniIndex - 6]], (int) (hitbox.x - xDrawOffset) - xLevelOffset + flipX, (int) (hitbox.y - yDrawOffset), width * flipW, height, null);
             else
-                g.drawImage(animations[playerAction + 1][aniIndex - 11], (int) (hitbox.x - xDrawOffset) - xLevelOffset, (int) (hitbox.y - yDrawOffset), width, height, null);
+                g.drawImage(animations[playerAction + 1][aniIndex - 11], (int) (hitbox.x - xDrawOffset) - xLevelOffset + flipX, (int) (hitbox.y - yDrawOffset), width * flipW, height, null);
             
         }
         
         if (playerAction == RUNNING)
             if (aniIndex + 2 < animations[playerAction + 1].length)
-                g.drawImage(animations[playerAction + 1][aniIndex + 2], (int) (hitbox.x - xDrawOffset) - xLevelOffset, (int) (hitbox.y - yDrawOffset), width, height, null);
+                g.drawImage(animations[playerAction + 1][aniIndex + 2], (int) (hitbox.x - xDrawOffset) - xLevelOffset + flipX, (int) (hitbox.y - yDrawOffset), width * flipW, height, null);
         
         if (inAir) {
             if (airSpeed < 0)
@@ -77,16 +80,12 @@ public class Player extends Entity{
         }
 
         if (playerAction == JUMP) {
-            g.drawImage(animations[playerAction][aniIndex + 2], (int) (hitbox.x - xDrawOffset) - xLevelOffset, (int) (hitbox.y - yDrawOffset), width, height, null);
+            g.drawImage(animations[playerAction][aniIndex + 2], (int) (hitbox.x - xDrawOffset) - xLevelOffset + flipX, (int) (hitbox.y - yDrawOffset), width * flipW, height, null);
         }
 
         if (playerAction == FALLING) {
-            g.drawImage(animations[playerAction - 1][5], (int) (hitbox.x - xDrawOffset) - xLevelOffset, (int) (hitbox.y - yDrawOffset), width, height, null);
+            g.drawImage(animations[playerAction - 1][5], (int) (hitbox.x - xDrawOffset) - xLevelOffset + flipX, (int) (hitbox.y - yDrawOffset), width * flipW, height, null);
         }
-
-        // if (playerAction == GROUND) {
-        //     g.drawImage(animations[playerAction - 2][aniIndex + 6], (int) (hitbox.x - xDrawOffset), (int) (hitbox.y - yDrawOffset), width, height, null);
-        // }
 
         drawHitbox(g);
     }
@@ -138,19 +137,22 @@ public class Player extends Entity{
         if (jump)
             jump();
 
-        // if (!left && !right && !inAir)
-        //     return;
-
         if (!inAir)
             if ((!left && !right) || (right && left))
                 return;
 
         float xSpeed = 0;
 
-        if (left)
+        if (left) {
             xSpeed -= playerSpeed;
-        if (right)
+            flipX = 0;
+            flipW = 1;
+        }
+        if (right) {
             xSpeed += playerSpeed;
+            flipX = width;
+            flipW = -1;
+        }
 
         if (!inAir)
             if (!IsEntityOnFloor(hitbox, levelData))
@@ -244,6 +246,19 @@ public class Player extends Entity{
 
     public void setJump(boolean jump) {
         this.jump = jump;
+    }
+
+    public void resetAll() {
+        resetDirBooleans();
+        inAir = false;
+        moving = false;
+        playerAction = IDLE;
+
+        hitbox.x = x;
+        hitbox.y = y;
+
+        if (!IsEntityOnFloor(hitbox, levelData))
+            inAir = true;
     }
 
 }

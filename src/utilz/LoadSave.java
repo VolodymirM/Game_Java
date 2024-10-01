@@ -13,7 +13,9 @@ public class LoadSave {
 
     public static final String PLAYER_ATLAS = "player_sprites_frog.png";
     public static final String LEVEL_ATLAS = "level_atlas.png";
-    public static final String LEVEL_ONE_DATA = "level_one_data.png";
+    public static final String LEVEL_ONE_DATA = "1.png";
+    public static final String LEVEL_TWO_DATA = "2.png";
+    public static final String LEVEL_THREE_DATA = "3.png";
     public static final String MENU_BUTTONS = "button_atlas.png";
     public static final String PAUSE_BACKGROUND = "pause_menu.png";
     public static final String URM_BUTTONS = "urm_buttons.png";
