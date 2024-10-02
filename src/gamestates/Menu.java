@@ -3,11 +3,9 @@ package gamestates;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 
 import main.Game;
 import ui.MenuButton;
-import utilz.LoadSave;
 
 public class Menu extends State implements StateMethods{
 

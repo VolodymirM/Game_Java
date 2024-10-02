@@ -42,6 +42,8 @@ public class Playing extends State implements StateMethods {
             levelManager.update();
             player.update();
             checkCloseToBorder();
+            if (((int)player.getHitbox().y) >= 420)
+                resetAll();
         }
         else {
             pauseOverlay.update();
