@@ -9,7 +9,7 @@ import ui.MenuButton;
 
 public class Menu extends State implements StateMethods{
 
-    private MenuButton[] buttons = new MenuButton[3];
+    private MenuButton[] buttons = new MenuButton[2];
 
     public Menu(Game game) {
         super(game);
@@ -18,8 +18,7 @@ public class Menu extends State implements StateMethods{
 
     private void loadButtons() {
         buttons[0] = new MenuButton(Game.GAME_WIDTH / 2, (int) (150 * Game.SCALE), 0, GameState.PLAYING);
-        buttons[1] = new MenuButton(Game.GAME_WIDTH / 2, (int) (220 * Game.SCALE), 1, GameState.OPTIONS);
-        buttons[2] = new MenuButton(Game.GAME_WIDTH / 2, (int) (290 * Game.SCALE), 2, GameState.QUIT);
+        buttons[1] = new MenuButton(Game.GAME_WIDTH / 2, (int) (220 * Game.SCALE), 2, GameState.QUIT);
     }
 
     @Override
