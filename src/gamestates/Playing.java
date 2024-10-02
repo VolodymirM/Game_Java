@@ -44,6 +44,12 @@ public class Playing extends State implements StateMethods {
             checkCloseToBorder();
             if (((int)player.getHitbox().y) >= 420)
                 resetAll();
+
+            if ((((int)player.getHitbox().y) >= 324) && (((int)player.getHitbox().x) == (4800))) {
+                GameState.state = GameState.MENU;
+                unpauseGame();
+                resetAll();
+            }
         }
         else {
             pauseOverlay.update();
